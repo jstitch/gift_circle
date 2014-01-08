@@ -1,4 +1,4 @@
-#!/usr/bin/pyrg
+#!/usr/bin/python
 # coding: utf-8
 
 import unittest
