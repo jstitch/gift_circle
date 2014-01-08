@@ -6,6 +6,18 @@ import unittest
 from giftcircle import GiftCircle
 
 class GiftCircleTests(unittest.TestCase):
+    def setUp(self):
+        f = open("test_unit.txt","w") 
+        f.write("""Javier Novoa Cataño,jstitch@gmail.com
+Javier Naranjamecanica,naranjamecanica00@hotmail.com
+""")
+        f.close()
+        f = open("test_unit_2.txt","w")
+        f.write("""Novoa,jstitch@gmail.com
+Naranjamecanica,naranjamecanica00@hotmail.com
+""")
+        f.close()
+    
     def test_load_data(self):
         gift_circle = GiftCircle("test_unit.txt")
         self.assertEqual(str(gift_circle),
