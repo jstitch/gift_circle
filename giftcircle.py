@@ -1,9 +1,10 @@
 class GiftCircle(object):
 
     def __init__(self, fname):
-        data = ""
+        data = []
         with open(fname,"r") as f:
-            data = f.read()
+            for s in f.readlines():
+                data.append(s.strip("\n"))
         self.data = data
 
     def __str__(self):
