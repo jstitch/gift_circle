@@ -8,4 +8,4 @@ class GiftCircle(object):
         self.data = data
 
     def __str__(self):
-        return self.data
+        return "\n".join(self.data)+"\n"
