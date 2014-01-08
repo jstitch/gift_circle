@@ -11,10 +11,11 @@ class GiftCircle(object):
         return "\n".join(self.data)+"\n"
     
     def parse_data(self):
-        self.parsed = [{'name'    : "Javier Novoa Cataño",
-                        'contact' : "jstitch@gmail.com"},
-                       {'name'    : "Javier Naranjamecanica",
-                        'contact' : "naranjamecanica00@hotmail.com"},
-                      ]
+        self.parsed = []
+        for elem in self.data:
+            d = elem.split(",")
+            participante = {'name'    : d[0]}
+            participante['contact'] = d[1]
+            self.parsed.append(participante)
 
         return self.parsed
