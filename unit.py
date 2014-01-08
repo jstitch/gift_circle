@@ -46,6 +46,16 @@ Naranjamecanica,naranjamecanica00@hotmail.com
                                      ])
         self.assertListEqual(parsed, gift_circle.parsed)
 
+        gift_circle = GiftCircle("test_unit_2.txt")
+        parsed = gift_circle.parse_data()
+
+        self.assertListEqual(parsed, [{'name'    : "Novoa",
+                                       'contact' : "jstitch@gmail.com"},
+                                      {'name'    : "Naranjamecanica",
+                                       'contact' : "naranjamecanica00@hotmail.com"},
+                                     ])
+        self.assertListEqual(parsed, gift_circle.parsed)
+
 
 if __name__ == '__main__':
     tl = unittest.TestLoader()
