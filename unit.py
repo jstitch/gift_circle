@@ -19,6 +19,10 @@ Javier Naranjamecanica,naranjamecanica00@hotmail.com
 Naranjamecanica,naranjamecanica00@hotmail.com
 """)
 
+        self.assertListEqual(gift_circle.data,
+                             ["Novoa,jstitch@gmail.com",
+                              "Naranjamecanica,naranjamecanica00@hotmail.com"])
+
 
 if __name__ == '__main__':
     tl = unittest.TestLoader()
