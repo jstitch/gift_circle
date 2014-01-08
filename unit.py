@@ -8,7 +8,16 @@ from giftcircle import GiftCircle
 class GiftCircleTests(unittest.TestCase):
     def test_load_data(self):
         gift_circle = GiftCircle("test_unit.txt")
-        print(gift_circle)
+        self.assertEqual(str(gift_circle),
+"""Javier Novoa Cataño,jstitch@gmail.com
+Javier Naranjamecanica,naranjamecanica00@hotmail.com
+""")
+
+        gift_circle = GiftCircle("test_unit_2.txt")
+        self.assertEqual(str(gift_circle),
+"""Novoa,jstitch@gmail.com
+Naranjamecanica,naranjamecanica00@hotmail.com
+""")
 
 
 if __name__ == '__main__':
