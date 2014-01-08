@@ -35,6 +35,17 @@ Naranjamecanica,naranjamecanica00@hotmail.com
                              ["Novoa,jstitch@gmail.com",
                               "Naranjamecanica,naranjamecanica00@hotmail.com"])
 
+    def test_parse_data(self):
+        gift_circle = GiftCircle("test_unit.txt")
+        parsed = gift_circle.parse_data()
+
+        self.assertListEqual(parsed, [{'name'    : "Javier Novoa Cataño",
+                                       'contact' : "jstitch@gmail.com"},
+                                      {'name'    : "Javier Naranjamecanica",
+                                       'contact' : "naranjamecanica00@hotmail.com"},
+                                     ])
+        self.assertListEqual(parsed, gift_circle.parsed)
+
 
 if __name__ == '__main__':
     tl = unittest.TestLoader()
