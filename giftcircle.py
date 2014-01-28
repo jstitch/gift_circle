@@ -1,3 +1,5 @@
+import random
+
 class GiftCircle(object):
 
     def __init__(self, fname):
@@ -19,3 +21,8 @@ class GiftCircle(object):
             self.parsed.append(participante)
 
         return self.parsed
+
+    def shuffle_data(self):
+        self.shuffled = self.parsed[:]
+        random.shuffle(self.shuffled)
+        return self.shuffled
