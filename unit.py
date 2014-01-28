@@ -82,7 +82,7 @@ if __name__ == '__main__':
     testcases = tl.getTestCaseNames(GiftCircleTests)
     print("Testcases:")
     for t in testcases:
-        print(" ", t)
+        print(" " + t)
     print("")
 
     unittest.TextTestRunner(verbosity=2).run(suite)
