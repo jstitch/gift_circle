@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import unittest
+import random
 
 from giftcircle import GiftCircle
 
@@ -69,6 +70,12 @@ Naranjamecanica,naranjamecanica00@hotmail.com
         names_shuffled = [ s['name'] for s in shuffled ]
         names_shuffled.sort()
         self.assertEqual(names_shuffled, [ p['name'] for p in parsed ])
+        elem = random.choice(names_shuffled)
+        self.assertTrue(elem in names_shuffled)
+        with self.assertRaises(ValueError):
+            random.sample(names_shuffled, 4)
+        for elem in random.sample(names_shuffled, 3):
+            self.assertTrue(elem in names_shuffled)
 
     def test_cannotshuffle_without_parse(self):
         gift_circle = GiftCircle("test_unit_3.txt")
