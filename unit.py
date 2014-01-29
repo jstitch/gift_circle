@@ -84,12 +84,19 @@ Naranjamecanica,naranjamecanica00@hotmail.com
 
 
 if __name__ == '__main__':
+    test_classes_to_run = [
+                           GiftCircleTests,
+                          ]
     tl = unittest.TestLoader()
-    suite = unittest.TestLoader().loadTestsFromTestCase(GiftCircleTests)
-    testcases = tl.getTestCaseNames(GiftCircleTests)
-    print("Testcases:")
-    for t in testcases:
-        print(" " + t)
-    print("")
-
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    suites_list = []
+    for test_class in test_classes_to_run:
+        print("%s testcases:" % test_class.__name__)
+        suite = tl.loadTestsFromTestCase(test_class)
+        testcases = tl.getTestCaseNames(test_class)
+        for t in testcases:
+            print(" ", t)
+        print("")
+        suites_list.append(suite)
+    big_suite = unittest.TestSuite(suites_list)
+    runner = unittest.TextTestRunner(verbosity=2)
+    results = runner.run(big_suite)
