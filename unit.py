@@ -1,10 +1,11 @@
 #!/usr/bin/python
 # coding: utf-8
 
-import unittest
+import unittest, mock
 import random
 
 from giftcircle import GiftCircle
+from senders import Sender, Email
 
 class GiftCircleTests(unittest.TestCase):
     def setUp(self):
@@ -83,9 +84,40 @@ Naranjamecanica,naranjamecanica00@hotmail.com
             shuffled = gift_circle.shuffle_data()
 
 
+class SendersTests(unittest.TestCase):
+    def test_sender(self):
+        sender = Sender(desde=('DesdeAddr','DesdeNombre'),
+                        a=('AAddr','ANombre'),
+                        msg="Mensaje")
+        self.assertEqual(sender.desde['addr'], "DesdeAddr")
+        self.assertEqual(sender.desde['nombre'], "DesdeNombre")
+        self.assertEqual(sender.a['addr'], "AAddr")
+        self.assertEqual(sender.a['nombre'], "ANombre")
+        self.assertEqual(sender.msg, "Mensaje")
+        self.assertIsNone(sender.send())
+
+    @mock.patch('senders.Email.smtplib.SMTP')
+    def test_email(self, mock_smtplib):
+        sender = Email(a=('jstitch@jonsnow', 'Javier Novoa C.'),
+                       subject="Asunto",
+                       msg="Este es un mensaje de Prueba\nPROBANDO PROBANDO 1,2,3")
+        self.assertEqual(sender.subject, "Asunto")
+        self.assertEqual(sender.desde['addr'],"from@addr")
+        self.assertEqual(sender.desde['nombre'],"FromAddr")
+        self.assertEqual(sender.server,'localhost')
+        self.assertEqual(sender.port,25)
+
+        smtpserver = mock_smtplib.return_value
+        smtpserver.sendmail.return_value={}
+        sender.send()
+        self.assertTrue(smtpserver.sendmail.called)
+        smtpserver.sendmail.assert_called_with(sender.desde['addr'], [sender.a['addr']], sender.msg.as_string())
+        
+
 if __name__ == '__main__':
     test_classes_to_run = [
                            GiftCircleTests,
+                           SendersTests,
                           ]
     tl = unittest.TestLoader()
     suites_list = []
