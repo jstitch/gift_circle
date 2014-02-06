@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Sender(object):
 
     def __init__(self, desde, a, msg):

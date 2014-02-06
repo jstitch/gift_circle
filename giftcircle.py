@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import random
 
 class GiftCircle(object):
@@ -26,3 +28,16 @@ class GiftCircle(object):
         self.shuffled = self.parsed[:]
         random.shuffle(self.shuffled)
         return self.shuffled
+
+if __name__=="__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Circulo de Regalos")
+    parser.add_argument("filename", help="Nombre del archivo con datos de los participantes")
+
+    args = parser.parse_args()
+
+    gc = GiftCircle(args.filename)
+    gc.parse_data()
+    gc.shuffle_data()
+    gc.send_circle()

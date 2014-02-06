@@ -20,7 +20,7 @@ Naranjamecanica,naranjamecanica00@hotmail.com
 """)
         f.close()
         f = open("test_unit_3.txt","w")
-        f.write("""Javier Novoa Cataño,javisfelagund@yahoo.com.mx
+        f.write("""Javier Novoa Cataño,jstitch@podemos.co
 Naranjamecanica,naranjamecanica00@hotmail.com
 Novoa,jstitch@gmail.com
 """)
@@ -48,9 +48,11 @@ Naranjamecanica,naranjamecanica00@hotmail.com
         parsed = gift_circle.parse_data()
 
         self.assertListEqual(parsed, [{'name'    : "Javier Novoa Cataño",
-                                       'contact' : "jstitch@gmail.com"},
+                                       'contact' : "jstitch@gmail.com",
+                                      },
                                       {'name'    : "Javier Naranjamecanica",
-                                       'contact' : "naranjamecanica00@hotmail.com"},
+                                       'contact' : "naranjamecanica00@hotmail.com",
+                                      },
                                      ])
         self.assertListEqual(parsed, gift_circle.parsed)
 
@@ -58,9 +60,11 @@ Naranjamecanica,naranjamecanica00@hotmail.com
         parsed = gift_circle.parse_data()
 
         self.assertListEqual(parsed, [{'name'    : "Novoa",
-                                       'contact' : "jstitch@gmail.com"},
+                                       'contact' : "jstitch@gmail.com",
+                                      },
                                       {'name'    : "Naranjamecanica",
-                                       'contact' : "naranjamecanica00@hotmail.com"},
+                                       'contact' : "naranjamecanica00@hotmail.com",
+                                      },
                                      ])
         self.assertListEqual(parsed, gift_circle.parsed)
 
@@ -82,6 +86,12 @@ Naranjamecanica,naranjamecanica00@hotmail.com
         gift_circle = GiftCircle("test_unit_3.txt")
         with self.assertRaisesRegexp(AttributeError, "'GiftCircle' object has no attribute 'parsed'") as ex:
             shuffled = gift_circle.shuffle_data()
+
+    def test_cannotsend_without_shuffle(self):
+        gift_circle = GiftCircle("test_unit_3.txt")
+        gift_circle.parse_data()
+        with self.assertRaisesRegexp(AttributeError, "'GiftCircle' object has no attribute 'shuffled'") as ex:
+            gift_circle.send_circle("This is a test message")
 
 
 class SendersTests(unittest.TestCase):
@@ -126,7 +136,7 @@ if __name__ == '__main__':
         suite = tl.loadTestsFromTestCase(test_class)
         testcases = tl.getTestCaseNames(test_class)
         for t in testcases:
-            print(" ", t)
+            print(t)
         print("")
         suites_list.append(suite)
     big_suite = unittest.TestSuite(suites_list)
