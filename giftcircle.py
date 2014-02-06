@@ -19,10 +19,13 @@ class GiftCircle(object):
     def parse_data(self):
         self.parsed = []
         for elem in self.data:
-            d = elem.split(",")
-            participante = {'name'    : d[0]}
-            participante['contact'] = d[1]
-            participante['type'] = senders.Email
+            data = elem.split(",")
+            participante = {'name'    : data[0]}
+            participante['contacts'] = []
+            for d in data[1:]:
+                participante['contacts'].append({})
+                participante['contacts'][-1]['addr'] = d
+                participante['contacts'][-1]['type'] = senders.Email
             self.parsed.append(participante)
 
         return self.parsed
@@ -40,10 +43,11 @@ class GiftCircle(object):
                 hacia = self.shuffled[n + 1]
             except IndexError:
                 hacia = self.shuffled[0]
-            em = desde['type']((desde['contact'],desde['name']),
-                               "GiftCircle",
-                               "Te toca darle a %s" % (hacia['name']))
-            em.send()
+            for contact in desde['contacts']:
+                em = contact['type']((contact['addr'],desde['name']),
+                                     "GiftCircle",
+                                     "Te toca darle a %s" % (hacia['name']))
+                em.send()
 
 if __name__=="__main__":
     import argparse
