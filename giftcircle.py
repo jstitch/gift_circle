@@ -2,6 +2,8 @@
 
 import random
 
+import senders
+
 class GiftCircle(object):
 
     def __init__(self, fname):
@@ -20,6 +22,7 @@ class GiftCircle(object):
             d = elem.split(",")
             participante = {'name'    : d[0]}
             participante['contact'] = d[1]
+            participante['type'] = senders.Email
             self.parsed.append(participante)
 
         return self.parsed
@@ -28,6 +31,19 @@ class GiftCircle(object):
         self.shuffled = self.parsed[:]
         random.shuffle(self.shuffled)
         return self.shuffled
+
+    def send_circle(self, message=""):
+        import smtplib
+        for n,s in enumerate(self.shuffled):
+            desde = s
+            try:
+                hacia = self.shuffled[n + 1]
+            except IndexError:
+                hacia = self.shuffled[0]
+            em = desde['type']((desde['contact'],desde['name']),
+                               "GiftCircle",
+                               "Te toca darle a %s" % (hacia['name']))
+            em.send()
 
 if __name__=="__main__":
     import argparse

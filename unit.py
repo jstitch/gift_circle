@@ -49,9 +49,11 @@ Naranjamecanica,naranjamecanica00@hotmail.com
 
         self.assertListEqual(parsed, [{'name'    : "Javier Novoa Cataño",
                                        'contact' : "jstitch@gmail.com",
+                                       'type'    : Email,
                                       },
                                       {'name'    : "Javier Naranjamecanica",
                                        'contact' : "naranjamecanica00@hotmail.com",
+                                       'type'    : Email,
                                       },
                                      ])
         self.assertListEqual(parsed, gift_circle.parsed)
@@ -61,9 +63,11 @@ Naranjamecanica,naranjamecanica00@hotmail.com
 
         self.assertListEqual(parsed, [{'name'    : "Novoa",
                                        'contact' : "jstitch@gmail.com",
+                                       'type'    : Email,
                                       },
                                       {'name'    : "Naranjamecanica",
                                        'contact' : "naranjamecanica00@hotmail.com",
+                                       'type'    : Email,
                                       },
                                      ])
         self.assertListEqual(parsed, gift_circle.parsed)
@@ -86,6 +90,12 @@ Naranjamecanica,naranjamecanica00@hotmail.com
         gift_circle = GiftCircle("test_unit_3.txt")
         with self.assertRaisesRegexp(AttributeError, "'GiftCircle' object has no attribute 'parsed'") as ex:
             shuffled = gift_circle.shuffle_data()
+
+    def test_send_circle(self):
+        gift_circle = GiftCircle("test_unit_3.txt")
+        gift_circle.parse_data()
+        gift_circle.shuffle_data()
+        gift_circle.send_circle()
 
     def test_cannotsend_without_shuffle(self):
         gift_circle = GiftCircle("test_unit_3.txt")
