@@ -1,7 +1,7 @@
 # coding: utf-8
 
-# import config_prod as config
 import config
+# import config_prod as config
 
 class Sender(object):
 
