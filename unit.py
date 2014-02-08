@@ -5,7 +5,7 @@ import unittest, mock
 import random
 
 from giftcircle import GiftCircle
-from senders import Sender, Email
+from senders import Sender, Email, config
 
 class GiftCircleTests(unittest.TestCase):
     def setUp(self):
@@ -100,11 +100,15 @@ Naranjamecanica,naranjamecanica00@hotmail.com
         with self.assertRaisesRegexp(AttributeError, "'GiftCircle' object has no attribute 'parsed'") as ex:
             shuffled = gift_circle.shuffle_data()
 
-    def test_send_circle(self):
+    @mock.patch('giftcircle.senders.Email.smtplib.SMTP')
+    def test_send_circle(self, mock_smtplib):
         gift_circle = GiftCircle("test_unit_3.txt")
         gift_circle.parse_data()
         gift_circle.shuffle_data()
+        smtpserver = mock_smtplib.return_value
+        smtpserver.sendmail.return_value={}
         gift_circle.send_circle()
+        self.assertTrue(smtpserver.sendmail.called)
 
     def test_cannotsend_without_shuffle(self):
         gift_circle = GiftCircle("test_unit_3.txt")
@@ -131,8 +135,8 @@ class SendersTests(unittest.TestCase):
                        subject="Asunto",
                        msg="Este es un mensaje de Prueba\nPROBANDO PROBANDO 1,2,3")
         self.assertEqual(sender.subject, "Asunto")
-        self.assertEqual(sender.desde['addr'],"from@addr")
-        self.assertEqual(sender.desde['nombre'],"FromAddr")
+        self.assertEqual(sender.desde['addr'],config.Email['FromAddr'])
+        self.assertEqual(sender.desde['nombre'],config.Email['FromName'])
         self.assertEqual(sender.server,'localhost')
         self.assertEqual(sender.port,25)
 

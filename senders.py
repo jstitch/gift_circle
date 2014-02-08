@@ -1,5 +1,8 @@
 # coding: utf-8
 
+# import config_prod as config
+import config
+
 class Sender(object):
 
     def __init__(self, desde, a, msg):
@@ -22,7 +25,7 @@ class Email(Sender):
         self.subject = subject
         self.server = server
         self.port = port
-        Sender.__init__(self, desde=("from@addr","FromAddr"), a=a, msg=msg)
+        Sender.__init__(self, desde=(config.Email['FromAddr'],config.Email['FromName']), a=a, msg=msg)
 
     def send(self):
         from email.mime.text import MIMEText
