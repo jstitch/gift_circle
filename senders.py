@@ -39,3 +39,20 @@ class Email(Sender):
             s.quit()
         except Exception as ex:
             raise Exception("Error sending email to %s (%s)" % (self.a['addr'], repr(ex)))
+
+class SMS(Sender):
+    import twilio.rest
+    from twilio import TwilioRestException
+
+    def __init__(self, a, msg, intlcode="+52"):
+        self.intlcode=intlcode
+        Sender.__init__(self, desde=(config.SMS['FromNumber'],"FromName"), a=a, msg=msg)
+
+    def send(self):
+        account_sid=config.SMS['AccountSID']
+        auth_token=config.SMS['AuthToken']
+        client = self.twilio.rest.TwilioRestClient(account_sid, auth_token)
+        try:
+            self.message = client.sms.messages.create(body=self.msg, to=self.intlcode+self.a['addr'], from_=self.desde['addr'])
+        except self.TwilioRestException as trex:
+            raise Exception("Error sending SMS to %s\n(%s)" % (self.a['nombre'], str(trex)))

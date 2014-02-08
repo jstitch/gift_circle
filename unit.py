@@ -5,7 +5,7 @@ import unittest, mock
 import random
 
 from giftcircle import GiftCircle
-from senders import Sender, Email, config
+from senders import Sender, Email, SMS, config
 
 class GiftCircleTests(unittest.TestCase):
     def setUp(self):
@@ -144,7 +144,30 @@ class SendersTests(unittest.TestCase):
         smtpserver.sendmail.return_value={}
         sender.send()
         self.assertTrue(smtpserver.sendmail.called)
-        smtpserver.sendmail.assert_called_with(sender.desde['addr'], [sender.a['addr']], sender.msg.as_string())
+        smtpserver.sendmail.assert_once_called_with(sender.desde['addr'], [sender.a['addr']], sender.msg.as_string())
+
+    @mock.patch('senders.SMS.twilio.rest.TwilioRestClient')
+    def test_twilio(self, mock_twilio):
+        sender = SMS(a=('5512345678','Javier Novoa C.'),
+                     msg="Este es un mensaje de prueba. PROBANDO PROBANDO 1,2,3")
+        self.assertEqual(sender.intlcode,"+52")
+        self.assertEqual(sender.desde['addr'],config.SMS['FromNumber'])
+        self.assertEqual(sender.desde['nombre'],'FromName')
+
+        import random
+        class message(object):
+            sid = "SM"+"".join(random.choice("abcdef0123456789") for i in range(32))
+        twilio = mock_twilio.return_value
+        twilio.sms.messages.create.return_value=message()
+        sender.send()
+        self.assertTrue(twilio.sms.messages.create.called)
+        twilio.sms.messages.create.assert_once_called_with(body=sender.msg, to=sender.intlcode+sender.a['addr'], from_=sender.desde['addr'])
+        self.assertEqual(str(type(sender.message.sid)),"<class 'str'>")
+        self.assertRegexpMatches(sender.message.sid, r"^SM[\w]{32}$")
+
+        twilio.sms.messages.create.side_effect=SMS.TwilioRestException("404","Not Found")
+        with self.assertRaisesRegexp(Exception, "Error sending SMS to %s" % (sender.a['nombre'],)) as ex:
+            sender.send()
         
 
 if __name__ == '__main__':
