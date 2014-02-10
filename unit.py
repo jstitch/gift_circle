@@ -146,6 +146,10 @@ class SendersTests(unittest.TestCase):
         self.assertTrue(smtpserver.sendmail.called)
         smtpserver.sendmail.assert_once_called_with(sender.desde['addr'], [sender.a['addr']], sender.msg.as_string())
 
+        smtpserver.side_effect=Exception("Error sending email to %s (%s)" % ("jstitch@jonsnow", ""))
+        with self.assertRaisesRegexp(Exception, "Error sending email to %s ([\w]*)" % ("jstitch@jonsnow",)) as ex:
+            sender.send()
+
     @mock.patch('senders.SMS.twilio.rest.TwilioRestClient')
     def test_twilio(self, mock_twilio):
         sender = SMS(a=('5512345678','Javier Novoa C.'),
