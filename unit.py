@@ -10,73 +10,73 @@ from senders import Sender, Email, SMS, config
 class GiftCircleTests(unittest.TestCase):
     def setUp(self):
         f = open("test_unit.txt","w") 
-        f.write("""Javier Novoa Cataño,jstitch@gmail.com
-Javier Naranjamecanica,naranjamecanica00@hotmail.com
+        f.write("""Nombre1,correo1@example.com
+Nombre2,correo2@example.com
 """)
         f.close()
         f = open("test_unit_2.txt","w")
-        f.write("""Novoa,jstitch@gmail.com
-Naranjamecanica,naranjamecanica00@hotmail.com
+        f.write("""Nombre1,correo1@example.com
+Nombre2,correo2@example.com
 """)
         f.close()
         f = open("test_unit_3.txt","w")
-        f.write("""Javier Novoa Cataño,jstitch@podemos.co
-Naranjamecanica,naranjamecanica00@hotmail.com
-Novoa,jstitch@gmail.com,jstitch@invernalia.homelinux.net
+        f.write("""Nombre1,correo1@example.com
+Nombre2,correo2@example.com
+Nombre3,correo3@example.com,correo4@example.com
 """)
         f.close()
     
     def test_load_data(self):
         gift_circle = GiftCircle("test_unit.txt")
         self.assertEqual(str(gift_circle),
-"""Javier Novoa Cataño,jstitch@gmail.com
-Javier Naranjamecanica,naranjamecanica00@hotmail.com
+"""Nombre1,correo1@example.com
+Nombre2,correo2@example.com
 """)
 
         gift_circle = GiftCircle("test_unit_2.txt")
         self.assertEqual(str(gift_circle),
-"""Novoa,jstitch@gmail.com
-Naranjamecanica,naranjamecanica00@hotmail.com
+"""Nombre1,correo1@example.com
+Nombre2,correo2@example.com
 """)
 
         self.assertListEqual(gift_circle.data,
-                             ["Novoa,jstitch@gmail.com",
-                              "Naranjamecanica,naranjamecanica00@hotmail.com"])
+                             ["Nombre1,correo1@example.com",
+                              "Nombre2,correo2@example.com"])
 
     def test_parse_data(self):
         gift_circle = GiftCircle("test_unit.txt")
         parsed = gift_circle.parse_data()
-        self.assertListEqual(parsed, [{'name'    : "Javier Novoa Cataño",
-                                       'contacts': [{'addr':"jstitch@gmail.com",'type':Email}],
+        self.assertListEqual(parsed, [{'name'    : "Nombre1",
+                                       'contacts': [{'addr':"correo1@example.com",'type':Email}],
                                       },
-                                      {'name'    : "Javier Naranjamecanica",
-                                       'contacts': [{'addr':"naranjamecanica00@hotmail.com",'type':Email}],
+                                      {'name'    : "Nombre2",
+                                       'contacts': [{'addr':"correo2@example.com",'type':Email}],
                                       },
                                      ])
         self.assertListEqual(parsed, gift_circle.parsed)
 
         gift_circle = GiftCircle("test_unit_2.txt")
         parsed = gift_circle.parse_data()
-        self.assertListEqual(parsed, [{'name'    : "Novoa",
-                                       'contacts': [{'addr':"jstitch@gmail.com",'type':Email}],
+        self.assertListEqual(parsed, [{'name'    : "Nombre1",
+                                       'contacts': [{'addr':"correo1@example.com",'type':Email}],
                                       },
-                                      {'name'    : "Naranjamecanica",
-                                       'contacts': [{'addr':"naranjamecanica00@hotmail.com",'type':Email}],
+                                      {'name'    : "Nombre2",
+                                       'contacts': [{'addr':"correo2@example.com",'type':Email}],
                                       },
                                      ])
         self.assertListEqual(parsed, gift_circle.parsed)
 
         gift_circle = GiftCircle("test_unit_3.txt")
         parsed = gift_circle.parse_data()
-        self.assertListEqual(parsed, [{'name'    : "Javier Novoa Cataño",
-                                       'contacts': [{'addr':"jstitch@podemos.co",'type':Email}],
+        self.assertListEqual(parsed, [{'name'    : "Nombre1",
+                                       'contacts': [{'addr':"correo1@example.com",'type':Email}],
                                       },
-                                      {'name'    : "Naranjamecanica",
-                                       'contacts': [{'addr':"naranjamecanica00@hotmail.com",'type':Email}],
+                                      {'name'    : "Nombre2",
+                                       'contacts': [{'addr':"correo2@example.com",'type':Email}],
                                       },
-                                      {'name'    : "Novoa",
-                                       'contacts': [{'addr':"jstitch@gmail.com",'type':Email},
-                                                    {'addr':"jstitch@invernalia.homelinux.net",'type':Email}],
+                                      {'name'    : "Nombre3",
+                                       'contacts': [{'addr':"correo3@example.com",'type':Email},
+                                                    {'addr':"correo4@example.com",'type':Email}],
                                       },
                                      ])
         self.assertListEqual(parsed, gift_circle.parsed)
