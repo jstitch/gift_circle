@@ -172,12 +172,35 @@ class SendersTests(unittest.TestCase):
         twilio.sms.messages.create.side_effect=SMS.TwilioRestException("404","Not Found")
         with self.assertRaisesRegexp(Exception, "Error sending SMS to %s" % (sender.a['nombre'],)) as ex:
             sender.send()
+
+
+class SMSTests(unittest.TestCase):
+    def setUp(self):
+        f = open("test_unit_4.txt","w")
+        f.write("""Nombre1,correo1@example.com
+Nombre2,5512345678
+Nombre3,correo3@example.com,5587654321
+""")
+        f.close()
+
+    def test_setEmail(self):
+        gf = GiftCircle('test_unit_4.txt')
+        pd = gf.parse_data()
+
+    def test_setSMS(self):
+        gf = GiftCircle('test_unit_4.txt')
+        pd = gf.parse_data()
+
+    def test_setEmailAndSMS(self):
+        gf = GiftCircle('test_unit_4.txt')
+        pd = gf.parse_data()
         
 
 if __name__ == '__main__':
     test_classes_to_run = [
                            GiftCircleTests,
                            SendersTests,
+                           SMSTests,
                           ]
     tl = unittest.TestLoader()
     suites_list = []
