@@ -182,6 +182,9 @@ Nombre2,5512345678
 Nombre3,correo3@example.com,5587654321
 """)
         f.close()
+        f = open("test_unit_5.txt","w")
+        f.write("""Nombre1,malcontacto""")
+        f.close()
 
     def test_setEmail(self):
         gf = GiftCircle('test_unit_4.txt')
@@ -194,6 +197,9 @@ Nombre3,correo3@example.com,5587654321
     def test_setEmailAndSMS(self):
         gf = GiftCircle('test_unit_4.txt')
         pd = gf.parse_data()
+
+    def test_malContacto(self):
+        gf = GiftCircle('test_unit_5.txt')
         
 
 if __name__ == '__main__':
