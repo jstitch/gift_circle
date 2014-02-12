@@ -25,6 +25,9 @@ Nombre2,correo2@example.com
 Nombre3,correo3@example.com,correo4@example.com
 """)
         f.close()
+        f = open("test_unit_5.txt","w")
+        f.write("""Nombre1,malcontacto""")
+        f.close()
     
     def test_load_data(self):
         gift_circle = GiftCircle("test_unit.txt")
@@ -80,6 +83,10 @@ Nombre2,correo2@example.com
                                       },
                                      ])
         self.assertListEqual(parsed, gift_circle.parsed)
+
+        gift_circle = GiftCircle("test_unit_5.txt")
+        with self.assertRaisesRegexp(Exception, "'GiftCircle' bad contact") as ex:
+            gift_circle.parse_data()
 
     def test_shuffle_data(self):
         gift_circle = GiftCircle("test_unit_3.txt")

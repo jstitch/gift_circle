@@ -1,6 +1,6 @@
 # coding: utf-8
 
-import random
+import random, re
 
 import senders
 
@@ -20,12 +20,15 @@ class GiftCircle(object):
         self.parsed = []
         for elem in self.data:
             data = elem.split(",")
-            participante = {'name'    : data[0]}
+            participante = {'name' : data[0]}
             participante['contacts'] = []
             for d in data[1:]:
                 participante['contacts'].append({})
+                if re.search(r"^[^@]+@[^@]+\.[^@]+", d):
+                    participante['contacts'][-1]['type'] = senders.Email
+                else:
+                    raise Exception("'GiftCircle' bad contact")
                 participante['contacts'][-1]['addr'] = d
-                participante['contacts'][-1]['type'] = senders.Email
             self.parsed.append(participante)
 
         return self.parsed
