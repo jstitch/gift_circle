@@ -47,9 +47,11 @@ class GiftCircle(object):
             except IndexError:
                 hacia = self.shuffled[0]
             for contact in desde['contacts']:
-                em = contact['type']((contact['addr'],desde['name']),
-                                     "GiftCircle",
-                                     "Te toca darle a %s" % (hacia['name']))
+                if contact['type'] == senders.Email:
+                    args = ((contact['addr'],desde['name']),
+                            "GiftCircle",
+                            "Te toca darle regalo a %s" % (hacia['name'],))
+                em = contact['type'](*args)
                 em.send()
 
 if __name__=="__main__":
