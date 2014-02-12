@@ -210,21 +210,6 @@ Nombre2,5587654321
     def test_malContacto(self):
         gf = GiftCircle('test_unit_5.txt')
 
-    @mock.patch('giftcircle.senders.SMS.twilio.rest.TwilioRestClient')
-    def test_send_circle(self, mock_twilio):
-        gift_circle = GiftCircle("test_unit_6.txt")
-        gift_circle.parse_data()
-        gift_circle.shuffle_data()
-
-        import random
-        class message(object):
-            sid = "SM"+"".join(random.choice("abcdef0123456789") for i in range(32))
-        twilio = mock_twilio.return_value
-        twilio.sms.messages.create.return_value=message()
-        gift_circle.send_circle()
-        self.assertTrue(twilio.sms.messages.create.called)
-        self.assertEquals(twilio.sms.messages.create.call_count, 2)
-
 
 if __name__ == '__main__':
     test_classes_to_run = [
