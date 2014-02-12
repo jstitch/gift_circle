@@ -195,15 +195,12 @@ Nombre3,correo3@example.com,5587654321
 
     def test_setEmail(self):
         gf = GiftCircle('test_unit_4.txt')
-        pd = gf.parse_data()
 
     def test_setSMS(self):
         gf = GiftCircle('test_unit_4.txt')
-        pd = gf.parse_data()
 
     def test_setEmailAndSMS(self):
         gf = GiftCircle('test_unit_4.txt')
-        pd = gf.parse_data()
 
     def test_malContacto(self):
         gf = GiftCircle('test_unit_5.txt')
