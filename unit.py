@@ -198,17 +198,17 @@ Nombre2,5587654321
 """)
         f.close()
 
-    def test_setEmail(self):
-        gf = GiftCircle('test_unit_4.txt')
+    # def test_setEmail(self):
+    #     gf = GiftCircle('test_unit_4.txt')
 
-    def test_setSMS(self):
-        gf = GiftCircle('test_unit_4.txt')
+    # def test_setSMS(self):
+    #     gf = GiftCircle('test_unit_4.txt')
 
-    def test_setEmailAndSMS(self):
-        gf = GiftCircle('test_unit_4.txt')
+    # def test_setEmailAndSMS(self):
+    #     gf = GiftCircle('test_unit_4.txt')
 
-    def test_malContacto(self):
-        gf = GiftCircle('test_unit_5.txt')
+    # def test_malContacto(self):
+    #     gf = GiftCircle('test_unit_5.txt')
 
 
 if __name__ == '__main__':
