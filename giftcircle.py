@@ -26,6 +26,8 @@ class GiftCircle(object):
                 participante['contacts'].append({})
                 if re.search(r"^[^@]+@[^@]+\.[^@]+", d):
                     participante['contacts'][-1]['type'] = senders.Email
+                elif re.search(r"^[\d]+$", d):
+                    participante['contacts'][-1]['type'] = senders.SMS
                 else:
                     raise Exception("'GiftCircle' bad contact")
                 participante['contacts'][-1]['addr'] = d
@@ -50,6 +52,9 @@ class GiftCircle(object):
                 if contact['type'] == senders.Email:
                     args = ((contact['addr'],desde['name']),
                             "GiftCircle",
+                            "Te toca darle regalo a %s" % (hacia['name'],))
+                elif contact['type'] == senders.SMS:
+                    args = ((contact['addr'],desde['name']),
                             "Te toca darle regalo a %s" % (hacia['name'],))
                 em = contact['type'](*args)
                 em.send()

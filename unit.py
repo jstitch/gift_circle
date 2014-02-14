@@ -198,17 +198,40 @@ Nombre2,5587654321
 """)
         f.close()
 
-    # def test_setEmail(self):
-    #     gf = GiftCircle('test_unit_4.txt')
+    def test_setEmail(self):
+        gf = GiftCircle('test_unit_4.txt')
+        pd = gf.parse_data()
+        self.assertEqual(pd[0]['contacts'][0]['type'], Email)
 
-    # def test_setSMS(self):
-    #     gf = GiftCircle('test_unit_4.txt')
+    def test_setSMS(self):
+        gf = GiftCircle('test_unit_4.txt')
+        pd = gf.parse_data()
+        self.assertEqual(pd[1]['contacts'][0]['type'], SMS)
 
-    # def test_setEmailAndSMS(self):
-    #     gf = GiftCircle('test_unit_4.txt')
+    def test_setEmailAndSMS(self):
+        gf = GiftCircle('test_unit_4.txt')
+        pd = gf.parse_data()
+        self.assertEqual(pd[2]['contacts'][0]['type'], Email)
+        self.assertEqual(pd[2]['contacts'][1]['type'], SMS)
 
-    # def test_malContacto(self):
-    #     gf = GiftCircle('test_unit_5.txt')
+    def test_malContacto(self):
+        gf = GiftCircle('test_unit_5.txt')
+        with self.assertRaisesRegexp(Exception, "'GiftCircle' bad contact") as ex:
+            pd = gf.parse_data()
+
+    @mock.patch('senders.SMS.twilio.rest.TwilioRestClient')
+    def test_send_circle(self, mock_twilio):
+        gift_circle = GiftCircle("test_unit_6.txt")
+        gift_circle.parse_data()
+        gift_circle.shuffle_data()
+
+        import random
+        class message(object):
+            sid = "SM"+"".join(random.choice("abcdef0123456789") for i in range(32))
+        twilio = mock_twilio.return_value
+        twilio.sms.messages.create.return_value=message()
+        gift_circle.send_circle()
+        self.assertTrue(twilio.sms.messages.create.called)
 
 
 if __name__ == '__main__':
