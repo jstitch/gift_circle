@@ -1,0 +1,8 @@
+image: python
+
+before_script:
+  - pip install -q --no-cache-dir --upgrade -r requirements.txt
+
+UnitTests:
+  script:
+    - python unit.py
