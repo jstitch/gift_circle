@@ -5,4 +5,5 @@ before_script:
 
 UnitTests:
   script:
+    - cd gift_circle
     - python unit.py
