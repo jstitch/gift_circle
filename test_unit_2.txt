@@ -1,0 +1,3 @@
+Persona1,Oso de peluche,correo@example.com,0987654321
+Persona2,Bebe;DVD,1234567890,estecorreo@example.com
+Persona3,Mouse;Servidor;Pantalla,uncorreo@example.com

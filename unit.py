@@ -9,61 +9,61 @@ class GiftCircle(unittest.TestCase):
     @classmethod
     def setupClass(self):
         f = open("test_unit.txt","w")
-        f.write("""Javier Novoa Cataño,jstitch@gmail.com,5515905010
-Lorenita,5536538102,lorena806@gmail.com
-Javier Naranjamecanica,naranjamecanica00@hotmail.com""")
+        f.write("""Persona1,correo@example.com,0987654321
+Persona2,1234567890,estecorreo@example.com
+Persona3,uncorreo@example.com""")
         f.close()
         f = open("test_unit_2.txt","w")
-        f.write("""Javier Novoa Cataño,Oso de peluche,jstitch@gmail.com,5515905010
-Lorenita,Bebe;DVD,5536538102,lorena806@gmail.com
-Javier Naranjamecanica,Mouse;Servidor;Pantalla,naranjamecanica00@hotmail.com""")
+        f.write("""Persona1,Oso de peluche,correo@example.com,0987654321
+Persona2,Bebe;DVD,1234567890,estecorreo@example.com
+Persona3,Mouse;Servidor;Pantalla,uncorreo@example.com""")
         f.close()
 
     def test_01_load(self):
         data = gift_circle.load_data("test_unit.txt")
-        self.assertListEqual(["Javier Novoa Cataño,jstitch@gmail.com,5515905010",
-			                  "Lorenita,5536538102,lorena806@gmail.com",
-			                  "Javier Naranjamecanica,naranjamecanica00@hotmail.com"],
+        self.assertListEqual(["Persona1,correo@example.com,0987654321",
+			                  "Persona2,1234567890,estecorreo@example.com",
+			                  "Persona3,uncorreo@example.com"],
 			data)
         data = gift_circle.load_data("test_unit_2.txt")
-        self.assertListEqual(["Javier Novoa Cataño,Oso de peluche,jstitch@gmail.com,5515905010",
-			                  "Lorenita,Bebe;DVD,5536538102,lorena806@gmail.com",
-			                  "Javier Naranjamecanica,Mouse;Servidor;Pantalla,naranjamecanica00@hotmail.com"],
+        self.assertListEqual(["Persona1,Oso de peluche,correo@example.com,0987654321",
+			                  "Persona2,Bebe;DVD,1234567890,estecorreo@example.com",
+			                  "Persona3,Mouse;Servidor;Pantalla,uncorreo@example.com"],
             data)
 
     def test_02_parse(self):
         data = gift_circle.load_data("test_unit.txt")
         parsed_data = gift_circle.parse_data(data)
-        self.assertListEqual([{'name':"Javier Novoa Cataño",'gifts':[],'contact':[{'dest':"jstitch@gmail.com",'type':"Email"},
-			                                                                      {'dest':"5515905010",'type':"SMS"}]},
-                              {'name':"Lorenita",'gifts':[],'contact':[{'dest':"5536538102",'type':"SMS"},
-			                                                           {'dest':"lorena806@gmail.com",'type':"Email"}]},
-                              {'name':"Javier Naranjamecanica",'gifts':[],'contact':[{'dest':"naranjamecanica00@hotmail.com",'type':"Email"}]},
+        self.assertListEqual([{'name':"Persona1",'gifts':[],'contact':[{'dest':"correo@example.com",'type':"Email"},
+			                                                                      {'dest':"0987654321",'type':"SMS"}]},
+                              {'name':"Persona2",'gifts':[],'contact':[{'dest':"1234567890",'type':"SMS"},
+			                                                           {'dest':"estecorreo@example.com",'type':"Email"}]},
+                              {'name':"Persona3",'gifts':[],'contact':[{'dest':"uncorreo@example.com",'type':"Email"}]},
 			                 ],
 			parsed_data)
         data = gift_circle.load_data("test_unit_2.txt")
         parsed_data = gift_circle.parse_data(data)
-        self.assertListEqual([{'name':"Javier Novoa Cataño",'gifts':["Oso de peluche"],'contact':[{'dest':"jstitch@gmail.com",'type':"Email"},
-			                                                                                      {'dest':"5515905010",'type':"SMS"}]},
-                              {'name':"Lorenita",'gifts':["Bebe","DVD"],'contact':[{'dest':"5536538102",'type':"SMS"},
-			                                                                       {'dest':"lorena806@gmail.com",'type':"Email"}]},
-                              {'name':"Javier Naranjamecanica",'gifts':["Mouse","Servidor","Pantalla"],'contact':[{'dest':"naranjamecanica00@hotmail.com",'type':"Email"}]},
+        self.assertListEqual([{'name':"Persona1",'gifts':["Oso de peluche"],'contact':[{'dest':"correo@example.com",'type':"Email"},
+			                                                                                      {'dest':"0987654321",'type':"SMS"}]},
+                              {'name':"Persona2",'gifts':["Bebe","DVD"],'contact':[{'dest':"1234567890",'type':"SMS"},
+			                                                                       {'dest':"estecorreo@example.com",'type':"Email"}]},
+                              {'name':"Persona3",'gifts':["Mouse","Servidor","Pantalla"],'contact':[{'dest':"uncorreo@example.com",'type':"Email"}]},
 			                 ],
 			parsed_data)
 
     def test_03_validate(self):
-        data = [{'name':"Javier Novoa Cataño",'contact':[{'dest':"naranjamecanica00@hotmail.com",'type':"Email"},
-			                                                           {'dest':"5515905010",'type':"SMS"}]},
-                              {'name':"Lorenita",'contact':[{'dest':"5536538102",'type':"SMS"},
-			                                                {'dest':"lorena806@gmail.com",'type':"Email"}]},
-                              {'name':"Javier Naranjamecanica",'contact':[{'dest':"naranjamecanica00@hotmail.com",'type':"Email"}]},
+        data = [{'name':"Persona1",'contact':[{'dest':"uncorreo@example.com",'type':"Email"},
+			                                                           {'dest':"0987654321",'type':"SMS"}]},
+                              {'name':"Persona2",'contact':[{'dest':"1234567890",'type':"SMS"},
+			                                                {'dest':"estecorreo@example.com",'type':"Email"}]},
+                              {'name':"Persona3",'contact':[{'dest':"uncorreo@example.com",'type':"Email"}]},
 			                 ]
         self.assertEqual(False, gift_circle.shuffle_data(data, validate=True))
-        data2 = [{'name':"Javier Novoa Cataño",'gifts':["Oso de peluche"],'contact':[{'dest':"naranjamecanica00@hotmail.com",'type':"Email"},
-                                                                                     {'dest':"5515905010",'type':"SMS"}]},
-                 {'name':"Lorenita",'gifts':["Bebe","DVD"],'contact':[{'dest':"5536538102",'type':"SMS"},
-                                                                      {'dest':"lorena806@gmail.com",'type':"Email"}]},
-                 {'name':"Javier Naranjamecanica",'gifts':["Mouse","Servidor","Pantalla"],'contact':[{'dest':"naranjamecanica00@hotmail.com",'type':"Email"}]},
+        data2 = [{'name':"Persona1",'gifts':["Oso de peluche"],'contact':[{'dest':"uncorreo@example.com",'type':"Email"},
+                                                                                     {'dest':"0987654321",'type':"SMS"}]},
+                 {'name':"Persona2",'gifts':["Bebe","DVD"],'contact':[{'dest':"1234567890",'type':"SMS"},
+                                                                      {'dest':"estecorreo@example.com",'type':"Email"}]},
+                 {'name':"Persona3",'gifts':["Mouse","Servidor","Pantalla"],'contact':[{'dest':"uncorreo@example.com",'type':"Email"}]},
 			    ]
         self.assertEqual(False, gift_circle.shuffle_data(data2, validate=True))
 
