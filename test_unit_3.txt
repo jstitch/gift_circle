@@ -1,0 +1,3 @@
+Nombre1,correo1@example.com
+Nombre2,correo2@example.com
+Nombre3,correo3@example.com,correo4@example.com

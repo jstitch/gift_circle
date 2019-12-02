@@ -1,0 +1,3 @@
+Nombre1,correo1@example.com
+Nombre2,5512345678
+Nombre3,correo3@example.com,5587654321
