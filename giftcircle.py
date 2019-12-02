@@ -15,7 +15,7 @@ class GiftCircle(object):
 
     def __str__(self):
         return "\n".join(self.data)+"\n"
-    
+
     def parse_data(self):
         self.parsed = []
         for elem in self.data:
@@ -41,7 +41,6 @@ class GiftCircle(object):
         return self.shuffled
 
     def send_circle(self, message=""):
-        import smtplib
         for n,s in enumerate(self.shuffled):
             desde = s
             try:
@@ -61,7 +60,7 @@ class GiftCircle(object):
 
 if __name__=="__main__":
     import argparse
-    
+
     parser = argparse.ArgumentParser(description="Circulo de Regalos")
     parser.add_argument("filename", help="Nombre del archivo con datos de los participantes")
 
@@ -69,5 +68,5 @@ if __name__=="__main__":
 
     gc = GiftCircle(args.filename)
     gc.parse_data()
-    gc.shuffle_data()
+    print(gc.shuffle_data())
     gc.send_circle()

@@ -9,7 +9,7 @@ from senders import Sender, Email, SMS, config
 
 class GiftCircleTests(unittest.TestCase):
     def setUp(self):
-        f = open("test_unit.txt","w") 
+        f = open("test_unit.txt","w")
         f.write("""Nombre1,correo1@example.com
 Nombre2,correo2@example.com
 """)
@@ -28,7 +28,7 @@ Nombre3,correo3@example.com,correo4@example.com
         f = open("test_unit_5.txt","w")
         f.write("""Nombre1,malcontacto""")
         f.close()
-    
+
     def test_load_data(self):
         gift_circle = GiftCircle("test_unit.txt")
         self.assertEqual(str(gift_circle),
@@ -85,7 +85,7 @@ Nombre2,correo2@example.com
         self.assertListEqual(parsed, gift_circle.parsed)
 
         gift_circle = GiftCircle("test_unit_5.txt")
-        with self.assertRaisesRegexp(Exception, "'GiftCircle' bad contact") as ex:
+        with self.assertRaisesRegex(Exception, "'GiftCircle' bad contact") as ex:
             gift_circle.parse_data()
 
     def test_shuffle_data(self):
@@ -104,7 +104,7 @@ Nombre2,correo2@example.com
 
     def test_cannotshuffle_without_parse(self):
         gift_circle = GiftCircle("test_unit_3.txt")
-        with self.assertRaisesRegexp(AttributeError, "'GiftCircle' object has no attribute 'parsed'") as ex:
+        with self.assertRaisesRegex(AttributeError, "'GiftCircle' object has no attribute 'parsed'") as ex:
             shuffled = gift_circle.shuffle_data()
 
     @mock.patch('giftcircle.senders.Email.smtplib.SMTP')
@@ -120,7 +120,7 @@ Nombre2,correo2@example.com
     def test_cannotsend_without_shuffle(self):
         gift_circle = GiftCircle("test_unit_3.txt")
         gift_circle.parse_data()
-        with self.assertRaisesRegexp(AttributeError, "'GiftCircle' object has no attribute 'shuffled'") as ex:
+        with self.assertRaisesRegex(AttributeError, "'GiftCircle' object has no attribute 'shuffled'") as ex:
             gift_circle.send_circle("This is a test message")
 
 
@@ -151,10 +151,10 @@ class SendersTests(unittest.TestCase):
         smtpserver.sendmail.return_value={}
         sender.send()
         self.assertTrue(smtpserver.sendmail.called)
-        smtpserver.sendmail.assert_once_called_with(sender.desde['addr'], [sender.a['addr']], sender.msg.as_string())
+        smtpserver.sendmail.assert_called_once_with(sender.desde['addr'], [sender.a['addr']], sender.msg.as_string())
 
         smtpserver.side_effect=Exception("Error sending email to %s (%s)" % ("jstitch@jonsnow", ""))
-        with self.assertRaisesRegexp(Exception, "Error sending email to %s ([\w]*)" % ("jstitch@jonsnow",)) as ex:
+        with self.assertRaisesRegex(Exception, "Error sending email to %s ([\w]*)" % ("jstitch@jonsnow",)) as ex:
             sender.send()
 
     @mock.patch('senders.SMS.twilio.rest.TwilioRestClient')
@@ -172,12 +172,12 @@ class SendersTests(unittest.TestCase):
         twilio.sms.messages.create.return_value=message()
         sender.send()
         self.assertTrue(twilio.sms.messages.create.called)
-        twilio.sms.messages.create.assert_once_called_with(body=sender.msg, to=sender.intlcode+sender.a['addr'], from_=sender.desde['addr'])
+        twilio.sms.messages.create.assert_called_once_with(body=sender.msg, to=sender.intlcode+sender.a['addr'], from_=sender.desde['addr'])
         self.assertEqual(str(type(sender.message.sid)),"<class 'str'>")
-        self.assertRegexpMatches(sender.message.sid, r"^SM[\w]{32}$")
+        self.assertRegex(sender.message.sid, r"^SM[\w]{32}$")
 
         twilio.sms.messages.create.side_effect=SMS.TwilioRestException("404","Not Found")
-        with self.assertRaisesRegexp(Exception, "Error sending SMS to %s" % (sender.a['nombre'],)) as ex:
+        with self.assertRaisesRegex(Exception, "Error sending SMS to %s" % (sender.a['nombre'],)) as ex:
             sender.send()
 
 
@@ -216,7 +216,7 @@ Nombre2,5587654321
 
     def test_malContacto(self):
         gf = GiftCircle('test_unit_5.txt')
-        with self.assertRaisesRegexp(Exception, "'GiftCircle' bad contact") as ex:
+        with self.assertRaisesRegex(Exception, "'GiftCircle' bad contact") as ex:
             pd = gf.parse_data()
 
     @mock.patch('senders.SMS.twilio.rest.TwilioRestClient')
