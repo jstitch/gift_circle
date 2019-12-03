@@ -1,0 +1,9 @@
+<h1>{{ circulo.nombre }}</h1>
+{% if circulo.shuffeled %}
+  <br /><em>YA FUE ENVIADO</em>
+{% endif %}
+<ul>
+  {% for persona in circulo.persona_set.all %}
+    <li><a href="{% url 'circulo:persona' persona.id%}">{{ persona.nombre }}</a></li>
+  {% endfor %}
+</ul>

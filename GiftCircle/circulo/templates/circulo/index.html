@@ -1,0 +1,11 @@
+<h2>Mis circulos de Amigos Secretos</h2>
+
+{% if latest_circulo_list %}
+    <ul>
+    {% for circulo in latest_circulo_list %}
+        <li><a href="{% url 'circulo:circulo' circulo.id %}">{{ circulo.nombre }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay circulos disponibles.</p>
+{% endif %}

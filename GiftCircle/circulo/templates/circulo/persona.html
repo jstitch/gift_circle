@@ -1,0 +1,17 @@
+<h1>{{ persona.circulo.nombre }}</h1>
+<h3>{{ persona.nombre }}</h3>
+<h5>Contacto</h5>
+<ul>
+  {% if persona.telefono %}
+    <li>Teléfono: {{ persona.telefono }}</li>
+  {% endif %}
+  {% if persona.email %}
+    <li>EMail: {{ persona.email}}</li>
+  {% endif %}
+</ul>
+<h5>Deseos</h5>
+<ul>
+  {% for deseo in persona.deseo_set.all %}
+    <li>{{ deseo.deseo }}</li>
+  {% endfor %}
+</ul>
