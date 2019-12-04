@@ -4,7 +4,7 @@ from django.db import models
 
 class Circulo(models.Model):
     nombre    = models.CharField(max_length=200)
-    shuffeled = models.BooleanField()
+    shuffeled = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nombre
@@ -13,8 +13,8 @@ class Circulo(models.Model):
 class Persona(models.Model):
     circulo  = models.ForeignKey(Circulo, on_delete=models.CASCADE)
     nombre   = models.CharField(max_length=200)
-    telefono = models.CharField(max_length=15)
-    email    = models.EmailField()
+    telefono = models.CharField(max_length=15, default=None, blank=True, null=True)
+    email    = models.EmailField(default=None, blank=True, null=True)
 
     def __str__(self):
         return self.nombre

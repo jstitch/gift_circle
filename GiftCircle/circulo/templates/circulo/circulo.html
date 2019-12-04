@@ -7,3 +7,12 @@
     <li><a href="{% url 'circulo:persona' persona.id%}">{{ persona.nombre }}</a></li>
   {% endfor %}
 </ul>
+
+{% if not circulo.shuffeled %}
+<h5>Enviar</h5>
+<form action="{% url 'circulo:enviar_circulo' circulo.id %}" method="post">
+  {% csrf_token %}
+  <input type="submit" value="Enviar Circulo" />
+</form>
+{% endif %}
+

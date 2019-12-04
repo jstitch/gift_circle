@@ -1,6 +1,9 @@
 # coding: utf-8
 
-import config
+try:
+    from . import config
+except ImportError:
+    import config
 
 class Sender(object):
     def __init__(self,fromaddr,fromname,toaddr,toname,message):

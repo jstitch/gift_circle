@@ -1,7 +1,10 @@
 # coding: utf-8
 
 import random, datetime
-import send_ticket as st
+try:
+    from . import send_ticket as st
+except ImportError:
+    import send_ticket as st
 
 def load_data(fname):
     data = []
@@ -55,6 +58,25 @@ def shuffle_data(data, validate=False):
 
     return data
 
+def enviar(data):
+    for n,e in enumerate(data):
+        desde = e
+        try:
+            to = data[n + 1]
+        except IndexError as ierr:
+            to = data[0]
+        print(n,desde['name'],to['name'])
+        for destiny in desde['contact']:
+            try:
+                senderclass = getattr(st,destiny['type'])
+            except AttributeError as aerr:
+                raise Exception("Sending type not recognized: %s (%s) for %s" % (destiny['type'],destiny['dest'],desde['name']))
+            regalos = "\n-".join(to['gifts'])
+            if len(to['gifts']) > 1:
+                regalos = regalos[0:regalos.rfind("\n")] + "\no\n" + regalos[regalos.rfind("\n")+1:]
+            mensaje = "Hola %s!\nPara el intercambio te toco %s, que le gustaría recibir uno de lo siguiente:\n\n-%s.\n\nObsequios con un rango de $200 a $300\n\nfecha: Martes 24/Dic/2013" % (desde['name'],to['name'],regalos)
+            sender = senderclass("","",destiny['dest'],desde['name'],mensaje)
+            sender.send()
 
 if __name__=="__main__":
     import argparse, sys, pprint
@@ -81,23 +103,6 @@ if __name__=="__main__":
             pprint.pprint(d)
 
         cont = False
-        for n,e in enumerate(d):
-            desde = e
-            try:
-                to = d[n + 1]
-            except IndexError as ierr:
-                to = d[0]
-            print(n,desde['name'],to['name'])
-            for destiny in desde['contact']:
-                try:
-                    senderclass = getattr(st,destiny['type'])
-                except AttributeError as aerr:
-                    raise Exception("Sending type not recognized: %s (%s) for %s" % (destiny['type'],destiny['dest'],desde['name']))
-                regalos = "\n-".join(to['gifts'])
-                if len(to['gifts']) > 1:
-                    regalos = regalos[0:regalos.rfind("\n")] + "\no\n" + regalos[regalos.rfind("\n")+1:]
-                mensaje = "Hola %s!\nPara el intercambio te toco %s, que le gustaría recibir uno de lo siguiente:\n\n-%s.\n\nObsequios con un rango de $200 a $300\n\nfecha: Martes 24/Dic/2013" % (desde['name'],to['name'],regalos)
-                sender = senderclass("","",destiny['dest'],desde['name'],mensaje)
-                sender.send()
+        enviar(d)
 
     sys.exit(0)

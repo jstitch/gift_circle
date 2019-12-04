@@ -1,19 +1,53 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.views import generic
 
 from .models import Circulo, Persona, Deseo
 
-def index(request):
-    latest_circulo_list = Circulo.objects.order_by('-nombre')[:5]
-    context = {
-        'latest_circulo_list': latest_circulo_list,
-    }
-    return render(request, 'circulo/index.html', context)
+class IndexView(generic.ListView):
+    template_name = 'circulo/index.html'
+    context_object_name = 'latest_circulo_list'
 
-def circulo(request, circulo_id):
+    def get_queryset(self):
+        """Return the last five circulos."""
+        return Circulo.objects.order_by('-nombre')[:5]
+
+class CirculoView(generic.DetailView):
+    model = Circulo
+    template_name = 'circulo/circulo.html'
+
+class PersonaView(generic.DetailView):
+    model = Persona
+    template_name = 'circulo/persona.html'
+
+class DeseoView(generic.DetailView):
+    model = Deseo
+    template_name = 'circulo/deseo.html'
+
+def enviar_circulo(request, circulo_id):
     un_circulo = get_object_or_404(Circulo, pk=circulo_id)
-    return render(request, 'circulo/circulo.html', {'circulo': un_circulo})
+    if not un_circulo.shuffeled:
+        lista = []
+        for persona in un_circulo.persona_set.all():
+            elem = "{},".format(persona.nombre.replace(","," "))
+            for deseo in persona.deseo_set.all():
+                elem += "{};".format(deseo.deseo)
+            elem.strip(";")
+            if persona.telefono:
+                elem += ",{}".format(persona.telefono)
+            elif persona.email:
+                elem += ",{}".format(persona.email)
+            lista.append(elem)
+
+        from gift_circle import gift_circle as gf
+        gf.enviar(gf.shuffle_data(gf.parse_data(lista)))
+
+        un_circulo.shuffeled = True
+        un_circulo.save()
+
+    return HttpResponseRedirect(reverse('circulo:circulo', args=(circulo_id,)))
+
 
 def persona(request, persona_id):
     una_persona = get_object_or_404(Persona, pk=persona_id)
