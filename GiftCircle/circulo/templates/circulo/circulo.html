@@ -1,3 +1,7 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'circulo/style.css' %}" />
+
 <h1>{{ circulo.nombre }}</h1>
 {% if circulo.shuffeled %}
   <br /><em>YA FUE ENVIADO</em>

@@ -1,0 +1,18 @@
+body {
+    font-family: verdana;
+    background-color: moccasin;
+}
+
+h1 {
+    background-color: darkorange;
+}
+
+h2 {
+    background-color: darkorange;
+}
+li {
+    list-style-type: circle;
+}
+li a {
+    color: green;
+}

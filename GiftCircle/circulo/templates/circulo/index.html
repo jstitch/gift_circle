@@ -1,4 +1,8 @@
-<h2>Mis circulos de Amigos Secretos</h2>
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'circulo/style.css' %}" />
+
+<h2>Mis círculos de Amigos Secretos</h2>
 
 {% if latest_circulo_list %}
     <ul>
