@@ -13,6 +13,10 @@ h2 {
 li {
     list-style-type: circle;
 }
+li.info {
+    list-style-type: none;
+    color: red;
+}
 li a {
     color: green;
 }

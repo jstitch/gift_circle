@@ -13,3 +13,14 @@
 {% else %}
     <p>No hay circulos disponibles.</p>
 {% endif %}
+
+<h5>Añadir circulo</h5>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'circulo:nuevo_circulo' %}" method="post">
+{% csrf_token %}
+  <label for="nombre">Nombre</label>
+  <input type="text" name="nombre" id="nombre" value="" /><br />
+
+  <input type="submit" value="Nuevo Circulo" />
+</form>

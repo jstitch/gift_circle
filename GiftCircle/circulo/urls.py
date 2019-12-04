@@ -13,5 +13,10 @@ urlpatterns = [
     # ex: /deseo/3
     path('deseo/<int:pk>', views.DeseoView.as_view(), name='deseo'),
 
-    path('<int:circulo_id>/enviar_circulo', views.enviar_circulo, name='enviar_circulo')
+    path('<int:circulo_id>/enviar_circulo', views.enviar_circulo, name='enviar_circulo'),
+
+    path('nuevo_circulo', views.nuevo_circulo, name='nuevo_circulo'),
+    path('<int:circulo_id>/nueva_persona', views.nueva_persona, name='nueva_persona'),
+
+    path('<int:circulo_id>/eliminar_circulo', views.eliminar_circulo, name='eliminar_circulo'),
 ]

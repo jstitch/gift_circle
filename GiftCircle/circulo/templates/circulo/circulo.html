@@ -3,6 +3,14 @@
 <link rel="stylesheet" type="text/css" href="{% static 'circulo/style.css' %}" />
 
 <h1>{{ circulo.nombre }}</h1>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 {% if circulo.shuffeled %}
   <br /><em>YA FUE ENVIADO</em>
 {% endif %}
@@ -20,3 +28,24 @@
 </form>
 {% endif %}
 
+<h5>Añadir persona</h5>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'circulo:nueva_persona' circulo.id %}" method="post">
+{% csrf_token %}
+  <label for="nombre">Nombre</label>
+  <input type="text" name="nombre" id="nombre" value="" /><br />
+
+  <label for="telefono">Teléfono</label>
+  <input type="text" name="telefono" id="telefono" value="" /><br />
+
+  <label for="temail">EMail</label>
+  <input type="text" name="email" id="email" value="" /><br />
+
+  <input type="submit" value="Nueva Persona" />
+</form>
+
+<form action="{% url 'circulo:eliminar_circulo' circulo.id %}" method="post">
+{% csrf_token %}
+  <input type="submit" value="Eliminar Circulo" />
+</form>
