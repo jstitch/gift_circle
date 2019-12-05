@@ -20,7 +20,7 @@
   {% endfor %}
 </ul>
 
-{% if not circulo.shuffeled %}
+{% if not circulo.shuffeled and circulo.persona_set.all|length > 2 %}
 <h5>Enviar</h5>
 <form action="{% url 'circulo:enviar_circulo' circulo.id %}" method="post">
   {% csrf_token %}
@@ -49,3 +49,5 @@
 {% csrf_token %}
   <input type="submit" value="Eliminar Circulo" />
 </form>
+
+<a href="{% url 'circulo:index' %}">Inicio</a>

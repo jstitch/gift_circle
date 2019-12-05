@@ -78,8 +78,34 @@ def nueva_persona(request, circulo_id):
     return HttpResponseRedirect(reverse('circulo:circulo', args=(circulo.id,)))
 
 
+def nuevo_deseo(request, persona_id):
+    persona = get_object_or_404(Persona, pk=persona_id)
+
+    deseo = Deseo(deseo=request.POST['deseo'])
+    deseo.persona = persona
+    deseo.save()
+
+    return HttpResponseRedirect(reverse('circulo:persona', args=(persona.id,)))
+
+
 def eliminar_circulo(request, circulo_id):
     circulo = get_object_or_404(Circulo, pk=circulo_id)
 
     circulo.delete()
     return HttpResponseRedirect(reverse('circulo:index'))
+
+
+def eliminar_persona(request, persona_id):
+    persona = get_object_or_404(Persona, pk=persona_id)
+
+    circulo = persona.circulo
+    persona.delete()
+    return HttpResponseRedirect(reverse('circulo:circulo', args=(circulo.id,)))
+
+
+def eliminar_deseo(request, deseo_id):
+    deseo = get_object_or_404(Deseo, pk=deseo_id)
+
+    persona = deseo.persona
+    deseo.delete()
+    return HttpResponseRedirect(reverse('circulo:persona', args=(persona.id,)))

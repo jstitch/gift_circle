@@ -13,9 +13,32 @@
     <li>EMail: {{ persona.email}}</li>
   {% endif %}
 </ul>
+
+{% if persona.deseo_set.all|length > 0 %}
 <h5>Deseos</h5>
 <ul>
   {% for deseo in persona.deseo_set.all %}
-    <li>{{ deseo.deseo }}</li>
+    <li><a href="{% url 'circulo:deseo' deseo.id %}">{{ deseo.deseo }}</a></li> 
   {% endfor %}
 </ul>
+{% endif %}
+
+<h5>Añadir deseo</h5>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'circulo:nuevo_deseo' persona.id %}" method="post">
+{% csrf_token %}
+  <label for="deseo">Deseo</label>
+  <input type="text" name="deseo" id="deseo" value="" /><br />
+
+  <input type="submit" value="Nuevo Deseo" />
+</form>
+
+<form action="{% url 'circulo:eliminar_persona' persona.id %}" method="post">
+{% csrf_token %}
+  <input type="submit" value="Eliminar Persona" />
+</form>
+
+<a href="{% url 'circulo:circulo' persona.circulo.id %}">{{ persona.circulo.nombre }}</a>
+<br />
+<a href="{% url 'circulo:index' %}">Inicio</a>

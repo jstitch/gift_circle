@@ -5,3 +5,14 @@
 <h1>{{ deseo.persona.circulo.nombre }}</h1>
 <h3>{{ deseo.persona.nombre }}</h3>
 <h5>{{ deseo.deseo }}</h5>
+
+<form action="{% url 'circulo:eliminar_deseo' deseo.id %}" method="post">
+{% csrf_token %}
+  <input type="submit" value="Eliminar Deseo" />
+</form>
+
+<a href="{% url 'circulo:persona' deseo.persona.id %}">{{ deseo.persona.nombre }}</a>
+<br />
+<a href="{% url 'circulo:circulo' deseo.persona.circulo.id %}">{{ deseo.persona.circulo.nombre }}</a>
+<br />
+<a href="{% url 'circulo:index' %}">Inicio</a>

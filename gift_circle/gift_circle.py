@@ -74,7 +74,7 @@ def enviar(data):
             regalos = "\n-".join(to['gifts'])
             if len(to['gifts']) > 1:
                 regalos = regalos[0:regalos.rfind("\n")] + "\no\n" + regalos[regalos.rfind("\n")+1:]
-            mensaje = "Hola %s!\nPara el intercambio te toco %s, que le gustaría recibir uno de lo siguiente:\n\n-%s.\n\nObsequios con un rango de $200 a $300\n\nfecha: Martes 24/Dic/2013" % (desde['name'],to['name'],regalos)
+            mensaje = "Hola %s!\nPara el intercambio te toco %s, que le gustaría recibir uno de lo siguiente:\n\n-%s." % (desde['name'],to['name'],regalos)
             sender = senderclass("","",destiny['dest'],desde['name'],mensaje)
             sender.send()
 
